@@ -1,0 +1,165 @@
+
+
+<script type="text/javascript">
+//CABEÇALHOS DAS FUNCOES
+
+
+var NumClick=0;
+
+document.addEventListener("DOMContentLoaded", init, false);
+/*
+function init()
+      {
+        var canvas = document.getElementById("myCanvas");
+        canvas.addEventListener("mousedown", getPosition, false);
+      }
+*/
+function getPosition(event)
+    {
+    var totalOffsetX = 0;
+    var totalOffsetY = 0;
+    var canvasX = 0;
+    var canvasY = 0;
+    var currentElement = this;
+
+    do{
+        totalOffsetX += currentElement.offsetLeft;
+        totalOffsetY += currentElement.offsetTop;
+    }
+    while(currentElement = currentElement.offsetParent)
+
+    canvasX = event.pageX - totalOffsetX;
+    canvasY = event.pageY - totalOffsetY;
+ 	alert(canvasX +" isto é XX e isto é YY " + canvasY);
+
+     
+      }
+
+//FUNCS	
+function EPar (num)
+{	
+	alert("a verificar se o num de cliques é par");
+	if (num/2==0 || num=0)
+		return true;
+	else
+		return false;
+
+}
+
+function relMouseCoords(event){
+    var totalOffsetX = 0;
+    var totalOffsetY = 0;
+    var canvasX = 0;
+    var canvasY = 0;
+    var currentElement = this;
+
+    do{
+        totalOffsetX += currentElement.offsetLeft;
+        totalOffsetY += currentElement.offsetTop;
+    }
+    while(currentElement = currentElement.offsetParent)
+
+    canvasX = event.pageX - totalOffsetX;
+    canvasY = event.pageY - totalOffsetY;
+    alert("Estou no relMouseCoords");
+    return {x:canvasX, y:canvasY}
+}
+
+function CanvasClick(event)
+{
+	//FindCanvas(event); 
+	//alert("UI CA BOM");
+	//obter as coordenadas do click na página mas não no canvas????
+	
+	//alert("X coords: " + x + ", Y coords: " + y);
+
+
+
+	//ponto clicados
+	
+	// se o click é par desenha a reta senão é par
+	if (EPar(NumClick))
+	{	
+		ctx.beginPath(); 
+		ctx.lineWidth="5";
+		ctx.strokeStyle="blue"; // Green path
+		ctx.moveTo(0,0);
+		ctx.lineTo(canvasX,canvasY);
+		ctx.stroke(); // Draw it
+		
+	}
+	else
+	{
+		alert("BUUUU!");
+	}
+	
+	NumClick++;
+	
+}	
+
+
+
+
+function SaveAndClear()
+{
+	alert("olá Boss isto ainda não corre nada tem calma");
+	//AQUI FICA O CÓDIGO :)
+}
+
+function DeleteAll() //leva ou não args?
+{
+	var r=confirm("Atenção deseja mesmo apagar todos os desenhos da Base de Dados?");
+	
+	if (r==true)
+  		{
+  			x="You pressed OK!";
+  			alert(x);
+  		}
+	else
+  	{
+  
+  	}
+   
+  	
+//confirm("Atenção deseja mesmo apagar todos os desenhos da Base de Dados?")
+ }
+	
+
+//FIM DAS FUNCS
+
+
+//INICIALIZAÇÕES
+
+
+
+</script>
+
+
+<h1>Problema 1 - Rails e HTML5 Canvas</h1>
+
+<table border="0">
+  <tr>
+    <th>Lista de desenhos</th>
+    <th>aqui é dinâmico e fica "desenho num+1" ou seja o desenho actual no CAnvas</th> 
+  </tr>
+  <tr>
+    <td>aqui é dinâmico e fica a lista dos links dos desenhos guardados na BD</td>
+    <td>
+    		<canvas id="myCanvas" width="400" height="200"  style="border:1px solid #000000;" onclick="CanvasClick(event)" 
+    				onload="FindCanvas()" onresize="FindCanvas()">
+    		</canvas>
+    </td>
+  </tr>
+  <tr> 
+  	<td>  </td>
+  	<td>
+  		<button type="button" onclick="SaveAndClear()">Save and clear</button>
+  		<button type="button" onclick="DeleteAll()">Delete All!</button> </td>
+  </tr>
+</table>
+
+
+
+
+
+
