@@ -4,33 +4,49 @@
 //CABEÇALHOS DAS FUNCOES
 
 
-NumClick=0;
-var LastX;
+
+
+MAXNUMPONTOS=500000;
+
+
+
+var DesenhoActual = new Array(MAXNUMPONTOS); //estrutura para guardar o desenho atual recoorre-se ao constutor coordenada
+
+
+NumClick=0; //numero de cliques no canvas que é igual ao num de pts do desenho
+
+var LastX; //para guardar o ultimo ponto
 var LastY;
 
-document.addEventListener("DOMContentLoaded", init, false);
-var ctx;
-function init()
+document.addEventListener("DOMContentLoaded", init, false); //o orelhas dos eventos
+var ctx; //contexto do canvas
+
+
+// DEFINIÇÃO DE FUNÇÕES
+
+function init() //está sempre À espera do clique no canvas com o listener
       {
         var canvas = document.getElementById("myCanvas");
         canvas.addEventListener("mousedown", getPosition, false);
         ctx=canvas.getContext("2d");
-
       }
 
 
-function getPosition(event)
-    {
+// Construtor
+function coordenada( pini, pfim ) {
+   this.pini = pini;
+   this.pfim = pfim;
+}
 
-    
+function getPosition(event) //DISPARA COM UM CLIQUE NO CANVAS
+{
+   
     var totalOffsetX = 0;
     var totalOffsetY = 0;
     var canvasX = 0;
     var canvasY = 0;
     var currentElement = this;
-    
-    //ctx=canvas.getContext("2d");
-
+    //detetar a coordenada no canvas
     do{
         totalOffsetX += currentElement.offsetLeft;
         totalOffsetY += currentElement.offsetTop;
@@ -41,51 +57,72 @@ function getPosition(event)
     canvasY = event.pageY - totalOffsetY;
  	  //alert(canvasX +" isto é XX e isto é YY " + canvasY);
   
-  if (NumClick>0)
-  { 
-    //alert("ESTOU A QUERER ESCREVER");
-    ctx.beginPath(); 
-    ctx.lineWidth="5";
-    ctx.strokeStyle="blue"; // Green path
-    ctx.moveTo(LastX,LastY);
-    ctx.lineTo(canvasX,canvasY);
-    ctx.stroke(); // Draw it
-    
-  }
-  else
-  {
-    //alert("BUUUU");
-  }
-  
-  LastX=canvasX;
-  LastY=canvasY;
-    NumClick=NumClick+1;
-  }
+    if (NumClick>0)
+    { 
+    //alert("ESTOU A ESCREVER no canvas");
+      ctx.beginPath(); 
+      ctx.lineWidth="3";
+      ctx.strokeStyle="blue"; 
+      ctx.moveTo(LastX,LastY);
+      ctx.lineTo(canvasX,canvasY);
+      ctx.stroke(); // Draw it
 
-//FUNCS	
+    }
+    else
+    {
+      //alert("BUUUU");
+    }
+  
+  //Actualiza 
+  
+    LastX=canvasX;
+    LastY=canvasY;
+    
+    DesenhoActual[NumClick] = new coordenada(canvasX,canvasY);
+
+    NumClick=NumClick+1;
+
+}
+//Não estou a usar isto
+/*	
 function EPar (num)
 {	
-	//alert("a verificar se o num de cliques é par ele agora está a " + NumClick);
 	if (num%2==0 || num==0)
-  {
-    // alert("DEU TRUE O NumClick"); 
+  { 
 		return true
 	}
   else
   {
-    //alert("DEU False O NumClick");
-		return false
+   	return false
   }
 }
-
+*/
 
 function SaveAndClear()
 {
-	alert("olá Boss isto ainda não corre nada tem calma");
-  ctx.fillStyle="white";
-ctx.fillRect(0,0,400,200);
-NumClick=0;
-	//AQUI FICA O CÓDIGO :)
+	
+if (NumClick<2)
+  {
+    alert("O seu desenho actual não pode ser guardado pois não tem um segmento de recta criado")
+  }
+else
+  {
+    for (i=0; i<NumClick ; i++)
+    {
+      //alert(DesenhoActual[i].pini + " este foi o XX do ponto num " + i + " e este o y " + DesenhoActual[i].pfim);
+      //guardar desenho na bd usarr o Ruby
+      
+      //inicializar desenho actual talvez não precise disto... :))
+      
+
+      //LIMPA DESENHO
+      ctx.fillStyle="white";
+      ctx.fillRect(0,0,400,200);
+
+      NumClick=0;
+    }
+
+  }
 }
 
 function DeleteAll() //leva ou não args?
@@ -99,38 +136,29 @@ function DeleteAll() //leva ou não args?
   			alert("TODOS OS SEUS REGISTOS FORAM APAGADOS");
   		}
 	else
-  	{
+  	 {
   
-  	}
-   
-  	
-//confirm("Atenção deseja mesmo apagar todos os desenhos da Base de Dados?")
- }
+  	 }
+     	
+}
 	
-
 //FIM DAS FUNCS
 
-
-//INICIALIZAÇÕES
-
-
-
 </script>
+
 
 
 <h1>Problema 1 - Rails e HTML5 Canvas</h1>
 
 <table border="0">
   <tr>
-    <th>Lista de desenhos</th>
-    <th>aqui é dinâmico e fica "desenho num+1" ou seja o desenho actual no CAnvas</th> 
+    <th color="blue">Lista de desenhos</th>
+    <th>aqui é dinâmico e fica a lista dos links dos desenhos guardados na BD</th> 
   </tr>
   <tr>
-    <td>aqui é dinâmico e fica a lista dos links dos desenhos guardados na BD</td>
+    <td>DYNAMIC Ltb IST</td>
     <td>
-    		<canvas id="myCanvas" width="400" height="200"  style="border:1px solid #000000;"  
-    				onload="FindCanvas()" onresize="FindCanvas()">
-    		</canvas>
+    		<canvas id="myCanvas" width="400" height="200"  style="border:1px solid #000000;">  		</canvas>
     </td>
   </tr>
   <tr> 
