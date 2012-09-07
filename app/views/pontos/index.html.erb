@@ -55,7 +55,7 @@ function getPosition(event) //DISPARA COM UM CLIQUE NO CANVAS
 
     canvasX = event.pageX - totalOffsetX;
     canvasY = event.pageY - totalOffsetY;
- 	  //alert(canvasX +" isto é XX e isto é YY " + canvasY);
+    //alert(canvasX +" isto é XX e isto é YY " + canvasY);
   
     if (NumClick>0)
     { 
@@ -84,23 +84,23 @@ function getPosition(event) //DISPARA COM UM CLIQUE NO CANVAS
 
 }
 //Não estou a usar isto
-/*	
+/*  
 function EPar (num)
-{	
-	if (num%2==0 || num==0)
+{ 
+  if (num%2==0 || num==0)
   { 
-		return true
-	}
+    return true
+  }
   else
   {
-   	return false
+    return false
   }
 }
 */
 
 function SaveAndClear()
 {
-	
+  
 if (NumClick<2)
   {
     alert("O seu desenho actual não pode ser guardado pois não tem um segmento de recta criado")
@@ -127,21 +127,21 @@ else
 
 function DeleteAll() //leva ou não args?
 {
-	var r=confirm("Atenção deseja mesmo apagar todos os desenhos da Base de Dados?");
-	
-	if (r==true)
-  		{
-  			x="You pressed OK!";
-        //apagar 
-  			alert("TODOS OS SEUS REGISTOS FORAM APAGADOS");
-  		}
-	else
-  	 {
+  var r=confirm("Atenção deseja mesmo apagar todos os desenhos da Base de Dados?");
   
-  	 }
-     	
+  if (r==true)
+      {
+        x="You pressed OK!";
+        //apagar 
+        alert("TODOS OS SEUS REGISTOS FORAM APAGADOS");
+      }
+  else
+     {
+  
+     }
+      
 }
-	
+  
 //FIM DAS FUNCS
 
 </script>
@@ -158,18 +158,31 @@ function DeleteAll() //leva ou não args?
   <tr>
     <td>DYNAMIC Ltb IST</td>
     <td>
-    		<canvas id="myCanvas" width="400" height="200"  style="border:1px solid #000000;">  		</canvas>
+        <canvas id="myCanvas" width="400" height="200"  style="border:1px solid #000000;">      </canvas>
     </td>
   </tr>
   <tr> 
-  	<td>  </td>
-  	<td>
-  		<button type="button" onclick="SaveAndClear()">Save and clear</button>
-  		<button type="button" onclick="DeleteAll()">Delete All!</button> </td>
+    <td>  </td>
+    <td>
+      <button type="button" onclick="SaveAndClear()">Save and clear</button>
+      <button type="button" onclick="DeleteAll()">Delete All!</button> </td>
   </tr>
 </table>
 
-<%= link_to 'Pontos', 'ListaDesenhos.html.erb' %> 
 
 
 
+
+<h1>Lista de Desenhos</h1>
+ 
+<table>
+  
+<% @Pontos.each do |Ponto| %>
+  <tr>
+   
+    <td><%= link_to 'Show', Ponto. %></td>
+ 
+  </tr>
+<% end %>
+</table>
+ 

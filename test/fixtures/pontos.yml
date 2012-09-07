@@ -1,0 +1,13 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+
+one:
+  NumDesenho: 
+  NumPontoNoDesenho: 
+  CoordX: 
+  CoordY: 
+
+two:
+  NumDesenho: 
+  NumPontoNoDesenho: 
+  CoordX: 
+  CoordY: 
