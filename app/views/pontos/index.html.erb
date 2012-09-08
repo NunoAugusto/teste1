@@ -98,30 +98,32 @@ function EPar (num)
 }
 */
 
-function SaveAndClear()
+function SaveAndClear() 
 {
   
 if (NumClick<2)
   {
     alert("O seu desenho actual não pode ser guardado pois não tem um segmento de recta criado")
+    return false
   }
 else
   {
     for (i=0; i<NumClick ; i++)
     {
       //alert(DesenhoActual[i].pini + " este foi o XX do ponto num " + i + " e este o y " + DesenhoActual[i].pfim);
-      //guardar desenho na bd usarr o Ruby
-      
+      //guardar desenho na bd usar o Ruby
+      //% @order = @customer.orders.create(:order_date => Time.now)      
+      Pontos = ponto.create();
       //inicializar desenho actual talvez não precise disto... :))
       
 
-      //LIMPA DESENHO
-      ctx.fillStyle="white";
-      ctx.fillRect(0,0,400,200);
-
-      NumClick=0;
+      
+      
     }
-
+    //LIMPA DESENHO
+    ctx.fillStyle="white";
+    ctx.fillRect(0,0,400,200);
+    NumClick=0;
   }
 }
 
@@ -143,7 +145,12 @@ function DeleteAll() //leva ou não args?
 }
   
 //FIM DAS FUNCS
-
+/*# Examplo para inserir na bd:
+#
+#   cities = City.create([{ name: 'Chicago' }, { name: 'Copenhagen' }])
+#   Mayor.create(name: 'Emanuel', city: cities.first)
+??
+*/
 </script>
 
 
@@ -153,10 +160,21 @@ function DeleteAll() //leva ou não args?
 <table border="0">
   <tr>
     <th color="blue">Lista de desenhos</th>
-    <th>aqui é dinâmico e fica a lista dos links dos desenhos guardados na BD</th> 
+    <th> desenho numero-> </th> 
   </tr>
   <tr>
-    <td>DYNAMIC Ltb IST</td>
+    <td>
+          <table>
+            
+          <% @Pontos.each do |ponto| %>
+            <tr>
+             
+              <td><%= link_to 'Show', ponto.NumDesenho %></td>
+           
+            </tr>
+          <% end %>
+          </table>
+</td>
     <td>
         <canvas id="myCanvas" width="400" height="200"  style="border:1px solid #000000;">      </canvas>
     </td>
@@ -173,14 +191,14 @@ function DeleteAll() //leva ou não args?
 
 
 
-<h1>Lista de Desenhos</h1>
+
  
 <table>
   
-<% @Pontos.each do |Ponto| %>
+<% @Pontos.each do |ponto| %>
   <tr>
    
-    <td><%= link_to 'Show', Ponto. %></td>
+    <td><%= link_to 'Show', ponto.NumDesenho %></td>
  
   </tr>
 <% end %>
