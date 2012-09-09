@@ -1,4 +1,6 @@
 Teste1::Application.routes.draw do
+  resources :pontinhos
+
   get "welcome/index"
 
   # The priority is based upon order of creation:
@@ -7,7 +9,7 @@ Teste1::Application.routes.draw do
   # Sample of regular route:
   #   match 'products/:id' => 'catalog#view'
   # Keep in mind you can assign values other than :controller and :action
-
+ 
   # Sample of named route:
   #   match 'products/:id/purchase' => 'catalog#purchase', :as => :purchase
   # This route can be invoked with purchase_url(:id => product.id)
@@ -15,6 +17,7 @@ Teste1::Application.routes.draw do
   # Sample resource route (maps HTTP verbs to controller actions automatically):
   #   resources :products
   resources :Pontos
+  resources :Desenhos
 
   # Sample resource route with options:
   #   resources :products do
@@ -51,8 +54,8 @@ Teste1::Application.routes.draw do
 
   # You can have the root of your site routed with "root"
   # just remember to delete public/index.html.
-  root :to => 'Pontos#index'
-
+  root :to => 'Pontinhos#index'
+ 
   # See how all your routes lay out with "rake routes"
 
   # This is a legacy wild controller route that's not recommended for RESTful applications.

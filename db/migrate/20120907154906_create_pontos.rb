@@ -1,10 +1,10 @@
 class CreatePontos < ActiveRecord::Migration
   def change
     create_table :pontos do |t|
-      t.float :NumDesenho
-      t.float :NumPontoNoDesenho
-      t.float :CoordX
-      t.float :CoordY
+      t.integer :NumDesenho
+      t.integer :NumPontoNoDesenho
+      t.integer :CoordX
+      t.integer :CoordY
 
       t.timestamps
     end

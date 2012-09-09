@@ -5,12 +5,9 @@
 
 
 MAXNUMPONTOS=500000;
+DesenhoActual = new Array(MAXNUMPONTOS); //estrutura para guardar o desenho atual recoorre-se ao constutor coordenada
 
-
-
-var DesenhoActual = new Array(MAXNUMPONTOS); //estrutura para guardar o desenho atual recoorre-se ao constutor coordenada
-
-
+var str="";
 NumClick=0; //numero de cliques no canvas que é igual ao num de pts do desenho
 
 var LastX; //para guardar o ultimo ponto
@@ -77,8 +74,12 @@ function getPosition(event) //DISPARA COM UM CLIQUE NO CANVAS
     LastY=canvasY;
     
     DesenhoActual[NumClick] = new coordenada(canvasX,canvasY);
-
+    
+    //
+    
     NumClick=NumClick+1;
+
+
 
 }
 //Não estou a usar isto
@@ -101,31 +102,60 @@ function SaveAndClear()
   
 if (NumClick<2)
   {
-    alert("O seu desenho actual não pode ser guardado pois não tem um segmento de recta criado")
+    alert("O seu desenho actual não pode ser guardado pois não tem um segmento de recta criado");
     return false
   }
 else
   {
     
-    for (i=0; i<=NumClick ; i++)
-    {
-      //alert(DesenhoActual[i].pini + " este foi o XX do ponto num " + i + " e este o y " + DesenhoActual[i].pfim);
-      //guardar desenho na bd usar o Ruby
-      //% @order = @customer.orders.create(:order_date => Time.now)      
+      //incrementa o numero do desenho
+     
+      //Guarda o primeiro ponto do desenho
       
-      //inicializar desenho actual talvez não precise disto... :))
-      //document.write(DesenhoActual[i].pini + DesenhoActual[i].pfim + NumClick);
+      <% p=0 %>   //num de cliques
+      
 
-      
-      
-      
-    }
-   
-    //LIMPA DESENHO
-    ctx.fillStyle="white";
-    ctx.fillRect(0,0,400,200);
+      <% if (@pontinhos.last==nil) then %> 
+            <% nd=0 %> //numero de desenho
 
-    NumClick=0;
+            
+          <% else %>
+              <% nd=Pontinho.maximum("NumDesenho")+1 %>
+                
+      <%end%>
+
+
+      for (i=0; i<=NumClick ; i++)
+      {
+
+        
+        <% @pontinho = Pontinho.create(:NumDesenho => nd , :NumPonto => 555 ,  :CX => 0,:CX =>0)%>
+        
+        <% @pontinho = Pontinho.create(:NumDesenho => 999, :NumPonto => 999,:CX => 999,:CX =>99)%>
+
+        <% p=p+1%>
+        //alert(i);
+        //alert(DesenhoActual[i].pini + " este foi o XX do ponto num " + i + " e este o y " + DesenhoActual[i].pfim);
+        //guardar desenho na bd usar o Ruby
+        //% @order = @customer.orders.create(:order_date => Time.now)      
+        
+        //inicializar desenho actual talvez não precise disto... :))
+        
+  //document.getElementById("ancoraDesenhos").innerHTML=
+      
+      
+       
+
+      }
+      //inserir o desenho na BD
+      <% @pontinho.save %>
+
+      //LIMPA DESENHO
+      ctx.fillStyle="white";
+      ctx.fillRect(0,0,400,200);
+
+      NumClick=0;
+      return true
   }
 }
 
@@ -136,6 +166,7 @@ function DeleteAll() //leva ou não args?
   if (r==true)
       {
         x="You pressed OK!";
+        
         //apagar 
         alert("TODOS OS SEUS REGISTOS FORAM APAGADOS");
       }
@@ -147,12 +178,7 @@ function DeleteAll() //leva ou não args?
 }
   
 //FIM DAS FUNCS
-/*# Examplo para inserir na bd:
-#
-#   cities = City.create([{ name: 'Chicago' }, { name: 'Copenhagen' }])
-#   Mayor.create(name: 'Emanuel', city: cities.first)
-??
-*/
+
 </script>
 
 
@@ -162,44 +188,36 @@ function DeleteAll() //leva ou não args?
 <table border="0">
   <tr>
     <th color="blue"> Lista de desenhos</th>
-    <th>  desenho numero-><br /> 
+   
+    <th>  desenho numero- 
+     
+      <%if (@pontinhos.last==nil) then %> 
+            
+            0
+          <%else%>
+               
+            <%= Pontinho.maximum("NumDesenho") %>
+      <%end%>
 
-             
+      <br /> 
+
+              
     </th> 
   </tr>
   <tr>
-    <td>
-          
-          <a name="ancoraDesenhos"> listar os desenhos
-              <table>
   
-                  <% @Pontos.each do |ponto| %>
-                    <tr>
-                     
-                      <td><%= link_to 'Show', ponto.NumDesenho %></td>
-                   
-                    </tr>
-                  <% end %>
-                  </table>
+       <td>desenho (LISTA)
 
 
-          </a>
-
-             
-    
-
-    </td>
-             
-  
+            <% Pontinho.order.all(:group => "NumDesenho", :order => "NumDesenho") do |pontinho| %>
+                <tr>                     
+                       VOILA desenho_num <td><%= pontinho.NumDesenho %></td>    
+                </tr>
+            <% end %>
 
 
-
-
-
-                    
-         
-        
-          
+                        
+        </td>
 
 </td>
     <td>
@@ -210,12 +228,25 @@ function DeleteAll() //leva ou não args?
     <td>  </td>
     <td>
       <button type="button" onclick="SaveAndClear()">Save and clear</button>
+    
       <button type="button" onclick="DeleteAll()">Delete All!</button> </td>
   </tr>
+
 </table>
 
+<% @pontinho = Pontinho.create(:NumDesenho => 99, :NumPonto => 99,:CX => 99,:CX =>99)%>
+ 
+
+<% for pontinho in @pontinhos %>
+                     
+                <tr>   desenho numero-> <%= pontinho.NumDesenho %> <p></tr>  
+                <tr>   ponto no desenho numero-> <%= pontinho.NumPonto %> </tr> 
+                    
+           
+<% end %>
+<p>
+  <tr>   Contagem de pontos -> <td><%= Pontinho.count %>    </tr> </td> 
 
 
 
- <table>
-  
+ 

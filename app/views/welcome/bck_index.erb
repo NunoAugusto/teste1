@@ -169,6 +169,16 @@ function DeleteAll() //leva ou não args?
   </tr>
 </table>
 
+<table>
+  
+<% @Pontos.each do |ponto| %>
+  <tr>
+   
+    <td><%= link_to 'Show', ponto.NumDesenho %></td>
+ 
+  </tr>
+<% end %>
+</table>
 
 
 

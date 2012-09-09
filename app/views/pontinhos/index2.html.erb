@@ -1,0 +1,30 @@
+
+<h1>Listing pontinhos</h1>
+
+<table>
+  <tr>
+    <th>Numdesenho</th>
+    <th>Numponto</th>
+    <th>Cx</th>
+    <th>Cy</th>
+    <th></th>
+    <th></th>
+    <th></th>
+  </tr>
+
+<% @pontinhos.each do |pontinho| %>
+  <tr>
+    <td><%= pontinho.NumDesenho %></td>
+    <td><%= pontinho.NumPonto %></td>
+    <td><%= pontinho.CX %></td>
+    <td><%= pontinho.CY %></td>
+    <td><%= link_to 'Show', pontinho %></td>
+    <td><%= link_to 'Edit', edit_pontinho_path(pontinho) %></td>
+    <td><%= link_to 'Destroy', pontinho, confirm: 'Are you sure?', method: :delete %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'New Pontinho', new_pontinho_path %>
