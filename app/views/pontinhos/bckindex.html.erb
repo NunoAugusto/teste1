@@ -80,47 +80,43 @@ function getPosition(event) //DISPARA COM UM CLIQUE NO CANVAS
 
 }
 
-$(function () 
-{ 
-  $('#GuardaLimpaID').click(function ()
-  {
-  var CodigoContrutor;  
-  if (NumClick<2)
-    {
-      alert("O seu desenho actual não pode ser guardado pois não tem um segmento de recta criado")
-      return false
-    }
-  else
-    {
-      strHTML="";
-      for (i=0; i<NumClick-1 ; i++)
-          {     
-          //numpontonodpesenho,x,y  
-          strHTML+= "[" + i + ","+DesenhoActual[i].pini+","+DesenhoActual[i].pfim+"],"; 
-
-          // DesenhoActual[i].pini.string + "," + DesenhoActual[i].pfim.string);    
-          }  
-         
-      strHTML+= "[" + (NumClick-1) + ","+ DesenhoActual[NumClick-1].pini+","+DesenhoActual[NumClick-1].pfim+"]]";
-
-     
-      //LIMPA DESENHO
-      
-      this.value=strHTML;
-      document.getElementById("ArrayId").innerHTML=strHTML;
-      document.getElementById("ArrayId").value=strHTML;
-      ctx.fillStyle="white";  
-      ctx.fillRect(0,0,400,200);
-      NumClick=0;
-      alert(this.value);
-      return true
-    }
-  })
-});
-
-
-$(function () 
+function SaveAndClear() 
 {
+var CodigoContrutor;  
+if (NumClick<2)
+  {
+    alert("O seu desenho actual não pode ser guardado pois não tem um segmento de recta criado")
+    return false
+  }
+else
+  {
+    strHTML="[";
+    for (i=0; i<NumClick-1 ; i++)
+        {     
+        //numpontonodpesenho,x,y  
+        strHTML+= "[" + i + ","+DesenhoActual[i].pini+","+DesenhoActual[i].pfim+"],"; 
+
+        // DesenhoActual[i].pini.string + "," + DesenhoActual[i].pfim.string);    
+        }  
+       
+        strHTML+= "[" + (NumClick-1) + ","+ DesenhoActual[NumClick-1].pini+","+DesenhoActual[NumClick-1].pfim+"]]";
+
+   
+    //LIMPA DESENHO
+
+
+    document.getElementById("ArrayId").innerHTML=strHTML;
+    ctx.fillStyle="white";  
+    ctx.fillRect(0,0,400,200);
+    NumClick=0;
+    return true
+   
+  }
+}
+
+
+
+$(function () {
   $('#ApagaTudoID').click(function () 
   {
   var codigo_destruidor="";
@@ -143,7 +139,6 @@ $(function ()
        
   return r    
  })
-
 });
 </script>
 
@@ -153,11 +148,12 @@ $(function ()
   
 <%anump=0%>
 <%anumd=0%>
+<%aDA=Array.new()%>
 
 
 <table border="0" >
   <tr>
-    <div type="hidden" id="ArrayId" value="bu" <%$da=%>value></div>
+       <div type="hidden" id="ArrayId" value="bu"><%aDA=%></div>
     <th> Lista de desenhos</th>
     
     <td id="desNum"> Desenho->
@@ -178,7 +174,7 @@ $(function ()
 </td>
 
     <td>
-        <canvas id="myCanvas" data-msgNP=0 data-msgYY=0 data-msgXX=0 width="400" height="200"  style="border:1px solid #000000;"> 
+        <canvas id="myCanvas" data-msgNP=0 data-msgYY=0 data-msgXX=0 width="400" height="200"  style="border:1px solid #000000;">
 
         </canvas>
     </td>
@@ -187,16 +183,15 @@ $(function ()
     <td> </td>
     
     <td>
-      <button href=# id="GuardaLimpaID" type="button" onclick="SaveAndClear(); " value> 
-         Save and Clear
-      </button>
+      <button href=# id="GuardaLimpaID" type="button" onclick="SaveAndClear(); " value="" > Save and clear 
 
+      </button>
       <button href=# id="ApagaTudoID" type="button" value="" onclick="DeleteAll()" data-message
-          
+          <%unless Pontinho.value==""%>   
             <%@pontinhos.each do |p|%>
                 <%p.destroy%>
             <% end %>      
-        
+         <%end%>
       >
 
             Delete All!
@@ -226,11 +221,16 @@ $(function ()
 
  
 <tr>
-Tamanho do ARRAY <%unless $da==nil%>
-                      <%=$da.length%>
+Tamanho do ARRAY <%unless aDA==nil%>
+                      <%=aDA.length%>
                   <% end %><p> 
-          
-CONTEUDO <%=$da%>
+CONTEUDO <%=aDA%> atribuir valores 434 e 34 a ADA <p>
+<%aDA=[[434,34],[4,3],23] %>
+                  <%unless aDA==nil%>
+ <%=aDA.length%> o tamanho agora do ADA
+
+                  <% end %><p> 
+CONTEUDO <%=aDA%>
 
 </tr>
 
