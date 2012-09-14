@@ -157,7 +157,7 @@ $(function ()
 
 <table border="0" >
   <tr>
-    <div type="hidden" id="ArrayId" value="bu" <%$da=%>value></div>
+    <div type="hidden" id="ArrayId" value="bu" <%$da=%>></div>
     <th> Lista de desenhos</th>
     
     <td id="desNum"> Desenho->
@@ -188,18 +188,12 @@ $(function ()
     
     <td>
       <button href=# id="GuardaLimpaID" type="button" onclick="SaveAndClear(); " value> 
-         Save and Clear
+         <%= button_to 'SaveAndClear',  :class=>"guardalimpa" %>
       </button>
 
-      <button href=# id="ApagaTudoID" type="button" value="" onclick="DeleteAll()" data-message
-          
-            <%@pontinhos.each do |p|%>
-                <%p.destroy%>
-            <% end %>      
-        
-      >
+      <button href=# id="ApagaTudoID" type="button" value="" onclick="DeleteAll()" >
 
-            Delete All!
+            <%= button_to 'Delete All', :method => :destroy %>
            
    </td>   
       </button> </td>
