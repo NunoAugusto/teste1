@@ -1,8 +1,14 @@
+
+<%= form_tag do %>
+ 
+
+
+
 <script type="text/javascript" id="JSID" data-message>
 //CABEÇALHOS DAS FUNCOES
 
 //Vars Globais de JS
-DesenhoActual = new Array(); //estrutura para guardar o desenho atual recoorre-se ao constutor coordenada
+<%@ada=%>DesenhoActual = new Array(); //estrutura para guardar o desenho atual recoorre-se ao constutor coordenada
 
 var strHTML="";
 
@@ -92,39 +98,74 @@ $(function ()
     }
   else
     {
+      //constroi o array com os pontos das coordenadas do desenho actual que se encontra no canvas
       strHTML="[";
       for (i=0; i<NumClick-1 ; i++)
           {     
           //numpontonodpesenho,x,y  
-          strHTML+= "[" + i + ","+DesenhoActual[i].pini+","+DesenhoActual[i].pfim+"],"; 
+          strHTML+= DesenhoActual[i].pini+","+DesenhoActual[i].pfim+","; 
 
           // DesenhoActual[i].pini.string + "," + DesenhoActual[i].pfim.string);    
           }  
          
-      strHTML+= "[" + (NumClick-1) + ","+ DesenhoActual[NumClick-1].pini+","+DesenhoActual[NumClick-1].pfim+"]]";
+      strHTML+= DesenhoActual[NumClick-1].pini+","+DesenhoActual[NumClick-1].pfim+"]";
 
-     
       //LIMPA DESENHO
       
       this.value=strHTML;
-      document.getElementById("ArrayId").innerHTML=strHTML;
-      document.getElementById("ArrayId").value=strHTML;
+      //document.getElementById("ArrayId").innerHTML=strHTML;
+      document.getElementById("ArrayId").innerHTML="<%@ada=%>"+strHTML;
+      
+       document.getElementById("ArrayId").value=strHTML;
       //document.getElementById("JSID").getAttribute("data-message")=strHTML;
       ctx.fillStyle="white";  
       ctx.fillRect(0,0,400,200);
       NumClick=0;
       alert(document.getElementById("ArrayId").value);
+     
       return true
     }
   })
 });
+
+function DesenhaCanvas(adesenho) //recebe um array de coordenadas ordenado e escreve no canvas as linhas correspondentes a esses pontos
+ { 
+  if (adesenho.length==0)
+  {
+  }
+  else
+  {  
+      ctx.fillStyle="white";  
+      ctx.fillRect(0,0,400,200);
+      NumClick=0;
+      for (var i = 0; i <adesenho.length; i=i+2) {
+  
+          //actualiza a var global com o desenho actual para continuar a desenhar-se
+          DesenhoActual[i]=new coordenada(adesenho[i],adesenho[i+1]);
+          DesenhoActual[i]=new coordenada(adesenho[i+2],adesenho[i+3]);
+          
+          //desenha no canvas a partir dos pontos que vieram em adesenho
+          ctx.beginPath(); 
+          ctx.lineWidth="3";
+          ctx.strokeStyle="blue"; 
+          ctx.moveTo(adesenho[i],adesenho[i+1]);
+          ctx.lineTo(adesenho[i+2],adesenho[i+3]);
+          ctx.stroke(); // Draw it
+      
+          LastX=   adesenho[i+2];
+        LastX=   adesenho[i+3];
+                     
+      };
+     NumClick=adesenho.length/2;
+    }
+}  
 
 
 $(function () 
 {
   $('#ApagaTudoID').click(function () 
   {
-  var codigo_destruidor="";
+  
   var r=confirm("Atenção deseja mesmo apagar todos os desenhos da Base de Dados?");
   if (r==true)
       {   
@@ -155,33 +196,34 @@ $(function ()
 <%anump=0%>
 
 <%$anumd=0%>
-
+<%@desenhozinhos=Desenhozinho.all%>
+<%$ada=[0,0,200,200]%>
 <table border="0" >
   <tr>
-    <div type="hidden" id="ArrayId" value=""></div>
-
+    <div type="hidden" id="ArrayId2" value=""></div>
+ada que é uma var global do ruby ($ada) devia ter o q vai no alert.. mas estou a meter sempre isto qd faço save and clear<%=$ada%>
     
     <th> Lista de desenhos</th>
     
     <td id="desNum"> Desenho->
-        <%if Pontinho.count==0%>
+        <%if Desenhozinho.count==0%>
             <%= $anumd=1%>
           <%else%>
-            <%= $anumd=Pontinho.maximum("NumDesenho") %>
+            <%= $anumd=Desenhozinho.maximum("NumDesenho")+1 %>
         <%end%>
     </td> 
   </tr>
   <tr>  
        <td id="ListaDesenhos">
-            <% Pontinho.order.all(:group => "NumDesenho", :order => "NumDesenho").each do |p| %>
-                      <%= link_to "Desenho", :NumDesenho=>p.NumDesenho %><%=p.NumDesenho%><p> 
+            <% @desenhozinhos.each do |d| %>    
+                      Desenho <%= link_to d.NumDesenho , :id=>d.NumDesenho %><p> 
             <% end %>
       </td>
 
 </td>
 
     <td>
-        <canvas id="myCanvas" data-msgNP=0 data-msgYY=0 data-msgXX=0 width="400" height="200"  style="border:1px solid #000000;"> 
+        <canvas id="myCanvas" data-msgNP=0 data-msgYY=0 data-msgXX=0 width="400" height="200"  style="border:1px solid #000000;" > 
 
         </canvas>
     </td>
@@ -190,45 +232,36 @@ $(function ()
     <td> </td>
     
     <td>
-      <button href=# id="GuardaLimpaID" type="button" onclick="SaveAndClear();"> Guarda Limpa
-         <%= link_to 'Save and Clear' , guardalimpa , :action=>"guardalimpa"%>
+      <button href=# id="GuardaLimpaID" type="button" onclick="SaveAndClear();"> 
+       <input id="ArrayId" type="hidden" value=""></input>   
+        <%= link_to 'Save and Clear',  '/desenhozinhos/saveandclear' , :id=>"saveandclear" %>
       </button> 
 
-      <button href=# id="ApagaTudoID" type="button" value="Delete All" onclick="DeleteAll()" >
-
+      <button href=# id="ApagaTudoID" type="button" value="Delete All" onclick="DeleteAll()" > 
+           
+            <%= link_to 'Delete All', '/desenhozinhos/destroy' , :method=>:delete  %>
                       
-              <%= button_to "Delete All", "/pontinhos/destroy" , :method => :delete , :action=>"destroy"%>
-          
+                    
+             
+         </button>      
+
+        <button  type="button" value="valor" onclick="DesenhaCanvas([0,0,200,200]);">constroi um desenho a partir de um array </button>
 
 
    </td>   
-      </button> </td>
+      </td>
       
              
       <tr>
-        <td id="RowCount"> Num de regs <%= Pontinho.count %> </td>
+        <td id="RowCount"> Num de regs de pontinhos <%= Pontinho.count %> </td>
+      </tr>
+<tr>
+        <td id="RowCountDesenhos"> Num de regs de desenhos <%= Desenhozinho.count %> </td>
       </tr>
 
-  <td>
-    <%@pontinhos.each do |p|%>
-
-      <tr>
-        <td><%= p.NumDesenho %>NumDesenho </td>
-        <td><%= p.NumPonto %>NumPonto</td>
-        <td><%= p.CX %>CX</td>
-        <td><%= p.CY %>CY</td>
-      </tr>
-    <% end %>
-  </td>  
+ 
 </table>
 
 
 <tr>
-Tamanho do ARRAY <%unless $da==nil%>
-                      <%=$da.length%>
-                  <% end %><p> 
-          
-CONTEUDO <%=$da%>
-
-</tr>
-
+<% end %>

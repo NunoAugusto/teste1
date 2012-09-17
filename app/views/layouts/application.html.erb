@@ -10,9 +10,12 @@
   <%= csrf_meta_tags %>
 </head>
 <body>
+	<% unless flash[:aviso].blank? %>
+		<div id="aviso"><%= flash[:aviso] %></div>
+	<% end %>
 
 <%= yield %>
-
+</div>
 </body>
 
 </html>
