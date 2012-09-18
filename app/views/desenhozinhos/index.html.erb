@@ -1,14 +1,14 @@
 
 <%= form_tag do %>
  
-
+<%$ada=[]%>
 
 
 <script type="text/javascript" id="JSID" data-message>
 //CABEÇALHOS DAS FUNCOES
 
 //Vars Globais de JS
-<%@ada=%>DesenhoActual = new Array(); //estrutura para guardar o desenho atual recoorre-se ao constutor coordenada
+DesenhoActual = new Array(); //estrutura para guardar o desenho atual recoorre-se ao constutor coordenada
 
 var strHTML="";
 
@@ -69,11 +69,12 @@ function getPosition(event) //DISPARA COM UM CLIQUE NO CANVAS
     }
   
    
-    canvasX
+
     //Actualiza 
     LastX=canvasX;
     LastY=canvasY;
-    
+   
+
     DesenhoActual[NumClick] = new coordenada(canvasX,canvasY);
     
     
@@ -88,7 +89,7 @@ function getPosition(event) //DISPARA COM UM CLIQUE NO CANVAS
 
 $(function () 
 { 
-  $('#GuardaLimpaID').click(function ()
+  $('#GuardaLimpaID').click(function ($ada)
   {
   var CodigoContrutor;  
   if (NumClick<2)
@@ -115,7 +116,7 @@ $(function ()
       this.value=strHTML;
       //document.getElementById("ArrayId").innerHTML=strHTML;
       document.getElementById("ArrayId").innerHTML="<%@ada=%>"+strHTML;
-      
+      $ada=strHTML;
        document.getElementById("ArrayId").value=strHTML;
       //document.getElementById("JSID").getAttribute("data-message")=strHTML;
       ctx.fillStyle="white";  
@@ -197,7 +198,7 @@ $(function ()
 
 <%$anumd=0%>
 <%@desenhozinhos=Desenhozinho.all%>
-<%$ada=[0,0,200,200]%>
+
 <table border="0" >
   <tr>
     <div type="hidden" id="ArrayId2" value=""></div>
